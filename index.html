@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARGUMIND - AI Debate Trainer & Lawan Debat Kritis</title>
+    <meta name="description" content="Latih kemampuan berpikir kritis, logika, dan public speaking secara real-time dengan ARGUMIND, platform AI Debate Trainer interaktif terbaik.">
+    <meta name="keywords" content="ai debate trainer, aplikasi debat ai, latihan debat online, argumind, lawan debat ai">
+    <meta property="og:title" content="ARGUMIND - Master The Art of Debate With AI">
+    <meta property="og:description" content="Uji argumenmu dan bantai AI juri di platform debat interaktif.">
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<div class="glow-bg"></div>
+
+<!-- NAVBAR (tetap design kamu, cuma tambah logo kiri) -->
+<nav>
+    <div class="logo">
+    <img src="logo argumind2.jpeg" class="logo-img">
+
+    <div class="logo-text">
+        <span class="argu">ARGU</span><span class="mind">MIND</span>
+    </div>
+</div>
+</div>
+<div class="nav-links">
+    <!-- 1. Tambahkan link About di paling kiri -->
+    <a href="#about">About</a>
+    
+    <!-- 2. Ubah href Features agar mengarah ke id #features -->
+    <a href="#features">Features</a>
+    
+    <a href="#arena">Arena</a>
+    <button onclick="document.getElementById('arena').scrollIntoView({behavior:'smooth'})">
+        Start Training
+    </button>
+</div>
+</nav>
+
+<!-- HERO (tetap design kamu) -->
+<section class="hero">
+    <div class="badge">AI-Powered Debate Sparring Partner</div>
+
+    <h1 class="animate-on-scroll">Master The Art of <br><span class="gradient-text">Debate With AI</span></h1>
+
+    <p>
+        Latih kemampuan berpikir kritis, persuasi, dan public speaking dengan AI debat real-time.
+    </p>
+
+    <a href="#arena" class="btn-primary">Mulai Debat</a>
+    
+
+</section>
+
+<!-- ABOUT (BARU: isi fitur kamu) -->
+<section id="about" class="about animate-on-scroll">
+    <h2 class="features-title">About</h2>
+<p class="about-text">
+ARGUMIND adalah AI debate trainer yang mensimulasikan debat real-time antara user dan AI.
+Setiap sesi dibatasi 10 turn (5 vs 5), kemudian AI akan memberikan penilaian lengkap:
+score, pemenang, kelemahan masing-masing, dan alasan berbasis logika & data.
+ARGUMIND hadir sebagai platform AI Debate Trainer interaktif yang dirancang khusus untuk 
+membantu kamu melatih kemampuan berpikir kritis, menyusun persuasi yang solid, 
+hingga mengasah mental public speaking secara real-time. Tidak perlu bingung mencari lawan
+tanding atau mentor, karena di sini kamu bisa mensimulasikan sesi debat yang kompetitif 
+kapan saja dan di mana saja langsung bersama kecerdasan buatan.
+</p>
+
+
+
+<section id="features" class="features-section"></section>
+<h2 class="features-title">Features</h2>
+
+<div class="feature-grid animate-on-scroll">
+
+
+<div class="card">⚔️ 5 vs 5 Debate System</div>
+<div class="card">🏆 AI Judge System</div>
+<div class="card">📊 Score System (0–100)</div>
+<div class="card">🧠 Weakness Analysis</div>
+<div class="card">↩ Counter Argument Mode</div>
+<div class="card">🎯 Topic Generator</div>
+
+</div>
+
+</section>
+
+<!-- ARENA (DESIGN KAMU TETAP) -->
+<section id="arena" class="arena-section">
+
+<div class="chat-container glass">
+
+    <div class="chat-header">
+        <div class="status-dot"></div>
+        <span>AI Debate Coach: <b>ARGUMIND JUDGE MODE</b></span>
+    </div>
+
+    <div id="chat-box" class="chat-box">
+        <div class="msg ai-msg">
+            Halo! Mulai debat Anda sekarang.
+        </div>
+    </div>
+
+    <div class="input-area">
+        <input id="user-input" placeholder="Ketik argumen...">
+
+        <button id="send-btn">Send</button>
+        <button onclick="generateTopic()">🎯</button>
+        <button onclick="counterArgument()">↩</button>
+        <button onclick="resetChat()">⟲</button>
+    </div>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+ <div class="footer-container">
+    <a href="https://github.com/fajarbuchori" target="_blank" class="footer-link">
+        <i class="fab fa-github"></i> fajarbuchori
+    </a>
+    
+    <a href="https://instagram.com/fajar_skyy23" target="_blank" class="footer-link">
+        <i class="fab fa-instagram"></i> fajar_skyy23
+    </a>
+    
+    <a href="https://youtube.com/@IntiBacaan" target="_blank" class="footer-link">
+        <i class="fab fa-youtube"></i> Inti Bacaan
+    </a>
+    
+    <a href="mailto:fajarskyy833@gmail.com" class="footer-link">
+        <i class="fas fa-envelope"></i> fajarskyy833@gmail.com
+    </a>
+</div>
+  <div class="footer-bottom">
+    © 2026 Fajar Skyy.
+</footer>
+<script src="script.js"></script>
+</body>
+</html>

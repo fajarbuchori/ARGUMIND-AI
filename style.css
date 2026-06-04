@@ -1,0 +1,428 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #050505;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* glow background (KAMU ASLI) */
+.glow-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 30%, rgba(0, 240, 255, 0.15) 0%, transparent 50%);
+    z-index: -1;
+}
+
+/* NAV (KAMU STYLE) */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 10%;
+    background: rgba(5, 5, 5, 0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+}
+
+/* CONTAINER */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* jarak ICON ke tulisan */
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+/* TEKS ARGUMIND */
+.logo-text {
+    display: flex;
+    align-items: center;
+    gap: 0; /* bikin ARGU & MIND nyatu */
+}
+
+/* ICON */
+.logo-img {
+    width: 28px;
+    height: 28px;
+}
+
+/* ARGU */
+.logo .argu {
+    color: white;
+}
+
+/* MIND */
+.logo .mind {
+    background: linear-gradient(90deg, #00f0ff, #0072ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    text-shadow:
+        0 0 8px rgba(0,240,255,0.4),
+        0 0 16px rgba(0,114,255,0.3);
+}
+
+.logo-img {
+    width: 28px;
+    height: 28px;
+}
+
+.nav-links a {
+    color: #a1a1aa;
+    text-decoration: none;
+    margin-right: 25px;
+}
+
+.nav-links a:hover {
+    color: #00f0ff;
+}
+
+.nav-links button {
+    background: #00f0ff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+/* HERO (KAMU ASLI) */
+.hero {
+    /* Fotonya dimasukkan di sini (di dalam url) */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85)), url('bg-hero.jpg.jpeg');
+    
+    /* Pengaturan biar fotonya full satu layar */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    overflow: hidden; 
+    animation: zoomHalus 25s infinite alternate ease-in-out;
+    
+    /* Sisa codingan .hero kamu yang lain taruh di bawah sini */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 10% 120px 10%;
+}
+
+.badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    color: #00f0ff;
+    border-radius: 50px;
+}
+
+h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    margin-top: 20px;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #00f0ff, #0072ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+p {
+    color: #a1a1aa;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.btn-primary {
+    background: #00f0ff;
+    color: black;
+    padding: 15px 30px;
+    border-radius: 12px;
+    text-decoration: none;
+}
+
+/* ABOUT */
+.about {
+    padding: 130px 10%;
+}
+
+.about-text {
+    text-align: center;
+    max-width: 1200px; /* Ini yang bikin melar ke kanan-kiri */
+    margin: 0 auto;
+}
+
+/* Styling untuk area section Features secara keseluruhan */
+.features-section {
+    padding: 60px 0;           /* Memberikan ruang jarak atas dan bawah section */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Membuat tulisan judul "ARGUMIND Features" berada di tengah */
+.features-title {
+    text-align: center;
+    color: #ffffff;            /* Warna putih */
+    font-size: 24px;
+    margin-bottom: 30px;       /* Jarak antara judul dan kotak fitur di bawahnya */
+}
+
+/* Container utama yang membagi 6 fitur menjadi 3 atas 3 bawah */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Membagi menjadi 3 kolom sama rata */
+    gap: 15px;                 /* Jarak antar kotak fitur */
+    max-width: 950px;          /* Membatasi lebar maksimal grid agar tidak terlalu melar */
+    margin: 0 auto;            /* Membuat seluruh kesatuan grid berada di tengah halaman */
+    padding: 0 20px;           /* Jarak aman di kanan-kiri pada layar kecil */
+}
+
+/* Styling untuk masing-masing kotak fitur */
+.feature-item {
+    background-color: #1a1a1a; /* Warna background kotak (gelap) */
+    color: #ffffff;            /* Warna teks di dalam kotak */
+    padding: 18px 20px;        /* Jarak dalam kotak */
+    border-radius: 12px;       /* Membuat sudut kotak melengkung rapi */
+    border: 1px solid #333333; /* Garis tepi tipis */
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;       /* Vertikal center untuk ikon dan teks */
+    justify-content: center;   /* Horizontal center untuk teks di dalam kotak */
+    gap: 10px;                 /* Jarak antara emoji/ikon dengan teks */
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.feature-item {
+    background-color: #1e1e1e; /* Warna background gelap */
+    color: #ffffff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 1px solid #333333;
+    text-align: center;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.features-title {
+    text-align: center;      /* Membuat teks berada di tengah */
+    color: #ffffff;          /* Warna putih */
+    margin-bottom: 25px;     /* Memberi jarak antara tulisan dengan kotak-kotak fitur di bawahnya */
+    font-size: 24px;         /* Sesuaikan ukuran font jika diperlukan */
+}
+
+.card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 15px;
+    border-radius: 15px;
+    color: #fff;
+}
+
+.about-text {
+    margin-top: 30px;
+    color: #aaa;
+}
+
+/* ARENA (KAMU ASLI) */
+.arena-section {
+    padding: 50px 10%;
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+}
+
+.chat-container {
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+}
+
+.chat-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #00f0ff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00f0ff;
+}
+
+.chat-box {
+    flex: 1;
+    padding: 25px;
+    overflow-y: auto;
+}
+
+.msg {
+    max-width: 80%;
+    padding: 15px;
+    border-radius: 18px;
+    margin-bottom: 15px;
+}
+
+.ai-msg {
+    background: rgba(255,255,255,0.05);
+}
+
+.user-msg {
+    background: #00f0ff;
+    color: black;
+}
+
+/* INPUT */
+.input-area {
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    flex: 1;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(0,0,0,0.3);
+    color: white;
+}
+
+button {
+    background: #00f0ff;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.footer {
+  background-color: #111; /* ganti sesuai tema */
+  color: #fff;
+  text-align: center;
+  padding: 30px 0;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px; /* jarak antar icon+nama */
+}
+footer-content a {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* jarak icon dan teks */
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-content a i {
+  font-size: 24px;
+}
+
+.footer-content a:hover {
+  color: #f0a500; /* efek hover */
+}
+
+@media (max-width: 600px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+/* Mengatur semua link di footer */
+.footer-link {
+    color: #ffffff;             /* Mengubah warna teks dan ikon menjadi putih bersih */
+    text-decoration: none;      /* Menghilangkan garis bawah (underline) */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;                   /* Jarak antara ikon dan teks */
+    transition: opacity 0.2s;   /* Efek halus saat di-hover */
+}
+
+/* Efek ketika kursor diarahkan ke link */
+.footer-link:hover {
+    opacity: 0.8;               /* Sedikit meredup sebagai penanda kalau ini bisa diklik */
+    color: #ffffff;             /* Memastikan warna tetap putih saat diklik/dikunjungi */
+}
+
+/* Mengatasi warna ungu setelah link pernah diklik (visited) */
+.footer-link:visited {
+    color: #ffffff;
+}
+
+/* 1. Bikin Efek Gerakannya */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px); /* Teks mulai dari agak bawah */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);    /* Teks naik ke posisi asli */
+    }
+}
+
+/* 2. Pasang ke Elemen Teks yang Kamu Mau */
+h1, h2, h3, p, a, button, .feature-item {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* --- TARUH DI PALING BAWAH FILE CSS --- */
+
+/* Efek Gerakan Awal: Teks tersembunyi dan agak di bawah */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Efek Setelah Di-scroll: Teks muncul sempurna */
+.animate-on-scroll.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes zoomHalus {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.08); /* Cuma zoom 8% saja, jadi gerakannya soft banget */
+    }
+}
