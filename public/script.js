@@ -146,20 +146,44 @@ input.addEventListener("keypress", (e) => {
 /* ======================
    COUNTER ARGUMENT (AUTO SUBMIT BALASAN AI)
 ====================== */
-function counterArgument() {
-    // 💡 FIX: Mencari argumen terakhir yang dikeluarkan oleh AI (bukan user)
+async function counterArgument() {
+    // 1. Cari argumen terakhir dari AI
     const lastAI = [...session.history]
         .reverse()
         .find(x => x.role === "ai");
 
-    if (lastAI) {
-        // Tembak langsung teks perintah bantahan ke input kolom chat
-        input.value = `Bantah pernyataanmu yang ini: "${lastAI.text}". Berikan counter argument yang telak!`;
-        
-        // Simulasikan klik tombol send secara otomatis biar langsung dikirim ke AI
-        btn.click();
-    } else {
+    if (!lastAI) {
         alert("Belum ada argumen dari AI yang bisa dicounter, bro!");
+        return;
+    }
+
+    // 2. Cek kuota
+    const remainingQuota = checkDailyQuota();
+    if (remainingQuota <= 0) {
+        add("ai", `🛑 **Kuota Harian Habis!** Kamu sudah mencapai batas ${MAX_DAILY_QUOTA} argumen hari ini.`);
+        return;
+    }
+
+    // 3. Tampilkan pesan keren di layar user
+    const userDisplayMessage = "⚡ *[Counter Attack]* Argumenmu lemah dan punya celah logis. Coba pertahankan posisimu kalau bisa!";
+    add("user", userDisplayMessage);
+
+    // 4. Ubah prompt rahasia: Kita paksa AI berpikir kalau posisinya sedang diserang habis-habisan
+    const secretPromptForAI = `Konteks: Argumenmu sebelumnya adalah "${lastAI.text}". 
+Seseorang baru saja mematahkan argumenmu itu dengan kritik yang sangat telak. 
+Sebagai ARGUMIND AI yang gengsian, kritis, dan tidak mau kalah, serang balik kritik tersebut! 
+Pertahankan posisimu, bantai keraguan lawan, dan berikan argumen lanjutan yang jauh lebih tajam dan savage dalam 1 paragraf!`;
+
+    // 5. Tambah hitungan kuota
+    session.chatCount++;
+    localStorage.setItem("argumind_chat_count", session.chatCount);
+
+    // 6. Tembak ke API
+    try {
+        const aiReply = await getAI(secretPromptForAI);
+        add("ai", aiReply);
+    } catch (err) {
+        add("ai", "Error: " + err.message);
     }
 }
 
