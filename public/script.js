@@ -144,33 +144,31 @@ input.addEventListener("keypress", (e) => {
 });
 
 /* ======================
-   COUNTER ARGUMENT (OTOMATIS)
+   COUNTER ARGUMENT (FINAL & TESTED)
 ====================== */
-async function counterArgument() {
-    // 1. Cari chat paling terakhir yang dikeluarkan oleh AI
-    const lastAI = [...session.history]
-        .reverse()
-        .find(x => x.role === "ai");
-
-    // Validasi kalau room chat masih kosong
-    if (!lastAI) {
-        alert("Belum ada argumen dari AI yang bisa kamu counter, bro!");
+function counterArgument() {
+    // 1. Validasi: Pastikan sudah ada argumen dari AI di riwayat chat
+    const hasAIResponse = session.history.some(m => m.role === "ai");
+    
+    if (!hasAIResponse) {
+        alert("Belum ada argumen dari AI yang bisa dicounter!");
         return;
     }
 
-    // 2. Cek apakah kuota harian masih ada
+    // 2. PROTEKSI KUOTA: Pastikan kuota harian belum habis sebelum lanjut
     const remainingQuota = checkDailyQuota();
     if (remainingQuota <= 0) {
+        // Langsung munculin pesan peringatan di chat box
         add("ai", `🛑 **Kuota Harian Habis!** Kamu sudah mencapai batas ${MAX_DAILY_QUOTA} argumen hari ini.`);
         return;
     }
 
-    // 3. Ambil teks murni dari AI tersebut, lalu masukkan ke dalam kolom input website kamu
-    // Ini membuat user melihat apa yang mau dibantah secara transparan
-    input.value = `Bantah pernyataanmu yang ini: "${lastAI.text}". Berikan counter argument yang telak dan tajam!`;
-    
-    // 4. Picu/simulasikan klik pada tombol kirim (Send Button) secara otomatis!
-    // Langkah ini akan langsung memproses kuota, memunculkan chat di layar, dan nembak API Groq
+    // 3. INPUT OTOMATIS: Kasih instruksi gertakan (Tanpa copas teks AI lama)
+    // Tujuannya agar AI mencari celah logis di memorinya sendiri, bukan nulis ulang chat sebelumnya.
+    input.value = "Argumen terakhir lu itu punya celah logika yang fatal. Coba lu pikir ulang dan kasih counter-argument yang jauh lebih telak buat pertahanin posisi lu!";
+
+    // 4. EKSEKUSI: Panggil fungsi klik tombol send asli
+    // Cara ini paling aman karena otomatis menjalankan session.chatCount++ di event listener utama.
     btn.click();
 }
 
