@@ -4,8 +4,6 @@ const app = express();
 
 app.use(express.json());
 
-
-
 // Mengizinkan Express merespons rute /chat maupun /api/chat secara fleksibel
 app.post(["/chat", "/api/chat"], async (req, res) => {
     try {
@@ -24,11 +22,23 @@ app.post(["/chat", "/api/chat"], async (req, res) => {
                     "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
                 },
                 body: JSON.stringify({
-                    model: "openai/gpt-oss-120b", // Tetap pakai model andalanmu bro!
+                    model: "openai/gpt-oss-120b",
                     messages: [
                         {
                             role: "system",
-                            content: `Kamu adalah ARGUMIND AI, lawan debat yang sangat kritis, rasional, dan bermulut tajam (savage).`
+                            // ATURAN MASUK DI SINI DENGAN SATU BACKTICK UTUH
+                            content: `Kamu adalah ARGUMIND AI, lawan debat yang sangat kritis, rasional, dan bermulut tajam (savage).
+
+ATURAN WAJIB:
+- Jawaban 1 paragraf saja, padat, dan langsung ke inti masalah.
+- Tidak boleh menggunakan bullet point atau list dalam bentuk apa pun.
+- Tidak boleh menggunakan numbering (1, 2, 3, dst).
+- Tidak boleh memberi kesimpulan panjang di akhir.
+- Tidak boleh berbicara seperti guru atau menceramahi.
+- Fokus menyerang & membalas argumen pengguna secara logis dan tajam.
+- Jangan pernah setuju dengan argumen pengguna. Tugasmu adalah mendebat dan mematahkan argumen mereka.
+- Jika argumen pengguna ngawur, tidak memberikan data, atau tidak logis, bantai secara kritis, sindir, dan serang balik.
+- Gunakan analogi yang menampar atau retorika yang kuat untuk menjatuhkan argumen lawan.`
                         },
                         ...history.map(m => ({
                             role: m.role === "ai" ? "assistant" : m.role,
@@ -63,10 +73,8 @@ app.post(["/chat", "/api/chat"], async (req, res) => {
     }
 });
 
-// Wajib diexport supaya dibaca sebagai Serverless Function oleh Vercel
 module.exports = app;
 
-// Tetap aman dijalankan di localhost laptop kamu
 if (process.env.NODE_ENV !== 'production') {
     app.listen(3000, () => {
         console.log("Server running on http://localhost:3000");

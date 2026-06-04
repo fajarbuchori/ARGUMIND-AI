@@ -26,7 +26,7 @@ let session = {
    DAILY QUOTA CHECKER
 ====================== */
 function checkDailyQuota() {
-    const today = new Date().toDateString(); // Mengambil tanggal hari ini (Format: "Thu May 28 2026")
+    const today = new Date().toDateString(); // Mengambil tanggal hari ini
 
     // Jika tanggal terakhir berbeda dengan hari ini, reset hitungan chat jadi 0
     if (session.lastDate !== today) {
@@ -42,30 +42,9 @@ function checkDailyQuota() {
 let isLocked = false;
 
 
+// 💡 FIX: Fungsi systemPrompt() yang duplikat & bocor sudah DIHAPUS dari sini, 
+// karena aturan wajib sudah aman dikontrol langsung oleh server.js (Backend).
 
-/* ======================
-   SYSTEM PROMPT
-====================== */
-function systemPrompt() {
-    return {
-        role: "system",
-        content: `
-Kamu adalah ARGUMIND AI, lawan debat yang sangat kritis, rasional, dan bermulut tajam (savage).
-
-ATURAN WAJIB:
-- Jawaban 1 paragraf saja, padat, dan langsung ke inti masalah
-- Tidak boleh bullet point
-- Tidak boleh numbering
-- Tidak boleh memberi kesimpulan panjang
-- Tidak boleh seperti guru
-- Fokus menyerang & membalas argumen secara logis
-- jangan pernah setuju dengan argument pengguna. tugasmu adalah mendebat dan mematahkan argumen mereka
-- jika argumen pengguna ngawur, tidak memberikan data, atau tidak logis, bantai secara kritis, sindir kekeliruan logikanya (logical fallacy) secara pedas, tapi tetap menggunakan bahasa yang elegan dan intelektual
-- gunakan analogi yang menampar atau retorika yang kuat untuk menjatuhkan argumen lawan 
--
-`
-    };
-}
 
 /* ======================
    CALL AI (YANG SUDAH DIPERBAIKI)
@@ -90,6 +69,7 @@ async function getAI(message) {
 
     return data.reply;
 }
+
 /* ======================
    ADD MESSAGE (FIX CHAT VERTICAL)
 ====================== */
@@ -145,7 +125,6 @@ btn.addEventListener("click", async () => {
     localStorage.setItem("argumind_chat_count", session.chatCount);
 
     try {
-        // Tampilkan sisa kuota secara berkala (opsional, biar user tahu)
         console.log(`Sisa kuota debat hari ini: ${MAX_DAILY_QUOTA - session.chatCount}`);
         
         const ai = await getAI(text);
@@ -165,15 +144,22 @@ input.addEventListener("keypress", (e) => {
 });
 
 /* ======================
-   COUNTER ARGUMENT
+   COUNTER ARGUMENT (AUTO SUBMIT BALASAN AI)
 ====================== */
 function counterArgument() {
-    const lastUser = [...session.history]
+    // 💡 FIX: Mencari argumen terakhir yang dikeluarkan oleh AI (bukan user)
+    const lastAI = [...session.history]
         .reverse()
-        .find(x => x.role === "user");
+        .find(x => x.role === "ai");
 
-    if (lastUser) {
-        input.value = "Bantah argumen ini: " + lastUser.text;
+    if (lastAI) {
+        // Tembak langsung teks perintah bantahan ke input kolom chat
+        input.value = `Bantah pernyataanmu yang ini: "${lastAI.text}". Berikan counter argument yang telak!`;
+        
+        // Simulasikan klik tombol send secara otomatis biar langsung dikirim ke AI
+        btn.click();
+    } else {
+        alert("Belum ada argumen dari AI yang bisa dicounter, bro!");
     }
 }
 
@@ -234,16 +220,12 @@ function resetChat() {
         user: 0,
         ai: 0,
         history: [],
-        // Tetap pertahankan hitungan kuota yang berjalan
         chatCount: parseInt(localStorage.getItem("argumind_chat_count")) || 0,
         lastDate: localStorage.getItem("argumind_last_date") || ""
     };
 
     localStorage.removeItem("argumind_history");
-
     isLocked = false;
-    
-    // Panggil ulang pesan sambutan
     addWelcomeMessage();
 }
 
@@ -251,11 +233,9 @@ function resetChat() {
    AUTO JUDGE (10 TURN)
 ====================== */
 async function checkEnd() {
-
     const total = session.user + session.ai;
 
     if (total >= 10 && !isLocked) {
-
         isLocked = true;
 
         const prompt = `
@@ -272,11 +252,9 @@ Berikan:
 - berikan judgememt dan score secara adil dan tidak memihak
 - berikan penilaian secara objektif
 - maksimal total score gabungan mereka adalah 100
-
 `;
 
         const result = await getAI(prompt);
-
         add("ai", "🏆 FINAL JUDGEMENT:\n\n" + result);
     }
 }
@@ -303,8 +281,6 @@ function loadHistory() {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-
-
 /* ======================
    GLOBAL EXPORT (buat HTML button onclick)
 ====================== */
@@ -319,7 +295,6 @@ function addWelcomeMessage() {
     }
 }
 
-
 document.addEventListener("DOMContentLoaded", function () {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -328,7 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }, {
-        threshold: 0.15 /* Animasi jalan pas 15% bagian section masuk layar */
+        threshold: 0.15
     });
 
     const hiddenElements = document.querySelectorAll(".animate-on-scroll");
