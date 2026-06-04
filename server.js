@@ -1,15 +1,19 @@
 require("dotenv").config();
-
 const express = require("express");
-
 const app = express();
 
 app.use(express.json());
-app.use(express.static("."));
 
-app.post("/chat", async (req, res) => {
+
+
+// Mengizinkan Express merespons rute /chat maupun /api/chat secara fleksibel
+app.post(["/chat", "/api/chat"], async (req, res) => {
     try {
         const { message, history } = req.body;
+
+        if (!process.env.GROQ_API_KEY) {
+            return res.status(500).json({ error: "GROQ_API_KEY belum terpasang di Vercel!" });
+        }
 
         const response = await fetch(
             "https://api.groq.com/openai/v1/chat/completions",
@@ -20,7 +24,7 @@ app.post("/chat", async (req, res) => {
                     "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
                 },
                 body: JSON.stringify({
-                    model: "openai/gpt-oss-120b",
+                    model: "openai/gpt-oss-120b", // Tetap pakai model andalanmu bro!
                     messages: [
                         {
                             role: "system",
@@ -43,7 +47,7 @@ app.post("/chat", async (req, res) => {
         const data = await response.json();
 
         if (!response.ok) {
-            return res.status(500).json({
+            return res.status(response.status).json({
                 error: data.error?.message || "Groq API Error"
             });
         }
@@ -59,6 +63,12 @@ app.post("/chat", async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log("Server running on http://localhost:3000");
-});
+// Wajib diexport supaya dibaca sebagai Serverless Function oleh Vercel
+module.exports = app;
+
+// Tetap aman dijalankan di localhost laptop kamu
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(3000, () => {
+        console.log("Server running on http://localhost:3000");
+    });
+}
