@@ -144,47 +144,34 @@ input.addEventListener("keypress", (e) => {
 });
 
 /* ======================
-   COUNTER ARGUMENT (AUTO SUBMIT BALASAN AI)
+   COUNTER ARGUMENT (OTOMATIS)
 ====================== */
 async function counterArgument() {
-    // 1. Cari argumen terakhir dari AI
+    // 1. Cari chat paling terakhir yang dikeluarkan oleh AI
     const lastAI = [...session.history]
         .reverse()
         .find(x => x.role === "ai");
 
+    // Validasi kalau room chat masih kosong
     if (!lastAI) {
-        alert("Belum ada argumen dari AI yang bisa dicounter, bro!");
+        alert("Belum ada argumen dari AI yang bisa kamu counter, bro!");
         return;
     }
 
-    // 2. Cek kuota
+    // 2. Cek apakah kuota harian masih ada
     const remainingQuota = checkDailyQuota();
     if (remainingQuota <= 0) {
         add("ai", `🛑 **Kuota Harian Habis!** Kamu sudah mencapai batas ${MAX_DAILY_QUOTA} argumen hari ini.`);
         return;
     }
 
-    // 3. Tampilkan pesan keren di layar user
-    const userDisplayMessage = "⚡ *[Counter Attack]* Argumenmu lemah dan punya celah logis. Coba pertahankan posisimu kalau bisa!";
-    add("user", userDisplayMessage);
-
-    // 4. Ubah prompt rahasia: Kita paksa AI berpikir kalau posisinya sedang diserang habis-habisan
-    const secretPromptForAI = `Konteks: Argumenmu sebelumnya adalah "${lastAI.text}". 
-Seseorang baru saja mematahkan argumenmu itu dengan kritik yang sangat telak. 
-Sebagai ARGUMIND AI yang gengsian, kritis, dan tidak mau kalah, serang balik kritik tersebut! 
-Pertahankan posisimu, bantai keraguan lawan, dan berikan argumen lanjutan yang jauh lebih tajam dan savage dalam 1 paragraf!`;
-
-    // 5. Tambah hitungan kuota
-    session.chatCount++;
-    localStorage.setItem("argumind_chat_count", session.chatCount);
-
-    // 6. Tembak ke API
-    try {
-        const aiReply = await getAI(secretPromptForAI);
-        add("ai", aiReply);
-    } catch (err) {
-        add("ai", "Error: " + err.message);
-    }
+    // 3. Ambil teks murni dari AI tersebut, lalu masukkan ke dalam kolom input website kamu
+    // Ini membuat user melihat apa yang mau dibantah secara transparan
+    input.value = `Bantah pernyataanmu yang ini: "${lastAI.text}". Berikan counter argument yang telak dan tajam!`;
+    
+    // 4. Picu/simulasikan klik pada tombol kirim (Send Button) secara otomatis!
+    // Langkah ini akan langsung memproses kuota, memunculkan chat di layar, dan nembak API Groq
+    btn.click();
 }
 
 /* ======================
